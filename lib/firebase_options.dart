@@ -67,7 +67,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '15777884952',
     projectId: 'my-notes-project-b7fc4',
     storageBucket: 'my-notes-project-b7fc4.appspot.com',
-    iosClientId: '15777884952-aocd88sa3euku58n00d8k1voo10h9hgc.apps.googleusercontent.com',
+    iosClientId:
+        '15777884952-aocd88sa3euku58n00d8k1voo10h9hgc.apps.googleusercontent.com',
     iosBundleId: 'com.example.flutterLearnProject',
   );
 
@@ -77,7 +78,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '15777884952',
     projectId: 'my-notes-project-b7fc4',
     storageBucket: 'my-notes-project-b7fc4.appspot.com',
-    iosClientId: '15777884952-aocd88sa3euku58n00d8k1voo10h9hgc.apps.googleusercontent.com',
+    iosClientId:
+        '15777884952-aocd88sa3euku58n00d8k1voo10h9hgc.apps.googleusercontent.com',
     iosBundleId: 'com.example.flutterLearnProject',
   );
 }
