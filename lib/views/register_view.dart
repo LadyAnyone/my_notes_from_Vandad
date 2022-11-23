@@ -2,8 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_learn_project/constanst/routes.dart';
+import 'package:flutter_learn_project/views/verify_email_view.dart';
 import '../firebase_options.dart';
 import 'dart:developer' as devtools;
+
+import '../utilities/show_error_dialog.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -56,26 +59,40 @@ class _RegisterViewState extends State<RegisterView> {
           ),
           TextButton(
             onPressed: () async {
-              await Firebase.initializeApp(
-                  options: DefaultFirebaseOptions.currentPlatform);
+              //await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+              final email = _email.text;
+              final password = _password.text;
               try {
-                final email = _email.text;
-                final password = _password.text;
-                final userCredential =
-                    await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                await FirebaseAuth.instance.createUserWithEmailAndPassword(
                   email: email,
                   password: password,
                 );
-                devtools.log(userCredential.toString());
+
+                final user = FirebaseAuth.instance.currentUser;
+                user?.sendEmailVerification();
+
+                Navigator.of(context).pushNamed(verifyRoute);
               } on FirebaseAuthException catch (e) {
                 if (e.code == 'weak-password') {
-                  devtools.log('Weak Password');
+                  await showErrorDialog(
+                    context,
+                    'Weak password',
+                  );
                 } else if (e.code == 'email-already-in-use') {
-                  devtools.log('Email is already in use');
+                  await showErrorDialog(
+                    context,
+                    'Email is already in use',
+                  );
                 } else if (e.code == 'invalid-email') {
-                  devtools.log('invalid email entered');
+                  await showErrorDialog(
+                    context,
+                    'This is invalid email adress',
+                  );
+                } else {
+                  await showErrorDialog(context, 'Error ${e.code}');
                 }
-              }
+              } catch (e) {}
             },
             child: const Text('Register'),
           ),
