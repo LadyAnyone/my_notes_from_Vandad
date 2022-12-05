@@ -1,11 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer' as devtools
-    show
-        log; //ihtiyacın olan pakete isim ver, ihtiyacın olan kısmına 'show' ile eriş.
+import 'package:flutter_learn_project/services/auth/auth_service.dart';
+import 'dart:developer' as devtools show log;
 
-enum MenuAction { logout }
+import '../enums/menu_actions.dart'; //ihtiyacın olan pakete isim ver, ihtiyacın olan kısmına 'show' ile eriş.
 
 class NotesView extends StatefulWidget {
   const NotesView({super.key});
@@ -28,8 +25,7 @@ class _NotesViewState extends State<NotesView> {
                   final shouldLogout = await showLogOutDialog(context);
 
                   if (shouldLogout) {
-                    print('merhaba');
-                    await FirebaseAuth.instance.signOut();
+                    AuthService.firebase().logOut();
                     Navigator.of(context)
                         .pushNamedAndRemoveUntil('/login/', (_) => false);
                   }

@@ -1,10 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_learn_project/constanst/routes.dart';
-import '../firebase_options.dart';
-import 'dart:developer' as devtools;
-
+import 'package:flutter_learn_project/services/auth/auth_exception.dart';
+import 'package:flutter_learn_project/services/auth/auth_service.dart';
 import '../utilities/show_error_dialog.dart';
 
 class LoginView extends StatefulWidget {
@@ -24,6 +22,9 @@ class _LoginViewState extends State<LoginView> {
     _password = TextEditingController();
     super.initState();
   }
+
+//init state ve dispose un nasıl ve niye çalıştığını öğreneceğim. neden late ve final kullandığımıız, bunların işleverini,
+// nerede kullanılıcapını öğren
 
   @override
   void dispose() {
@@ -58,20 +59,32 @@ class _LoginViewState extends State<LoginView> {
           ),
           TextButton(
             onPressed: () async {
-              await Firebase.initializeApp(
-                  options: DefaultFirebaseOptions.currentPlatform);
+              //await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
               final email = _email.text;
               final password = _password.text;
 
               try {
                 //await unutma
-                final userCredential = await FirebaseAuth.instance
-                    .signInWithEmailAndPassword(
-                        email: email, password: password);
-                devtools.log(userCredential.toString());
+                await AuthService.firebase()
+                    .logIn(email: email, password: password);
+
+                final user = AuthService.firebase().currentUser;
+                if (user?.isEmailVerify ?? false) {
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil(notesRoute, (route) => false);
+                } else {
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil(verifyRoute, (route) => false);
+                }
                 Navigator.of(context)
                     .pushNamedAndRemoveUntil(notesRoute, (route) => false);
+              } on UserNotFoundAuthException {
+                await showErrorDialog(context, 'User not found');
+              } on WrongPasswordAuthException {
+                await showErrorDialog(context, 'Wrong credentials');
+              } on GenericAuthException {
+                await showErrorDialog(context, 'Authentication error');
               } on FirebaseAuthException catch (e) {
                 if (e.code == 'user-not-found') {
                   await showErrorDialog(
