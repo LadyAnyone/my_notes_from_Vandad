@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_learn_project/constanst/routes.dart';
 import 'package:flutter_learn_project/views/login_view.dart';
-import 'package:flutter_learn_project/views/notes_view.dart';
+import 'package:flutter_learn_project/views/notes/new_note_view.dart';
+import 'package:flutter_learn_project/views/notes/notes_view.dart';
 import 'package:flutter_learn_project/views/register_view.dart';
 import 'package:flutter_learn_project/views/verify_email_view.dart';
 
@@ -23,7 +24,8 @@ void main() {
       loginRoute: (context) => const LoginView(),
       registerRoute: (context) => const RegisterView(),
       verifyRoute: (context) => const VerifyEmailView(),
-      notesRoute: (context) => const NotesView()
+      notesRoute: (context) => const NotesView(),
+      newNoteRoute: (context) => const NewNoteView(),
     },
   ));
 }

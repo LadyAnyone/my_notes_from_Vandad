@@ -106,12 +106,10 @@ class MockAuthProvider implements AuthProvider {
   }
 
   @override
-  
   AuthUser? get currentUser => _user;
 
   @override
   Future<void> initialize() {
-     
     throw UnimplementedError();
   }
 
@@ -123,7 +121,7 @@ class MockAuthProvider implements AuthProvider {
     if (!_isInitialized) throw NotInializedException();
     if (email == 'bsr@gmail.com') throw UserNotFoundAuthException();
     if (password == '12345') throw WrongPasswordAuthException();
-    throw UnimplementedError(); 
+    throw UnimplementedError();
   }
 
   @override
@@ -141,10 +139,10 @@ class MockAuthProvider implements AuthProvider {
     if (isInitialized) throw NotInializedException();
     final user = _user;
     if (user == null) throw UserNotFoundAuthException();
-    const newUser = AuthUser(isEmailVerify: true);
+    const newUser = AuthUser(isEmailVerify: true, email: '  ');
     _user = newUser;
   }
-}
+} 
 
 
 //birim testleri görebilirsin

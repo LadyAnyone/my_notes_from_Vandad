@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_learn_project/constanst/routes.dart';
 import 'package:flutter_learn_project/services/auth/auth_service.dart';
 import 'package:flutter_learn_project/services/crud/notes_services.dart';
 import 'dart:developer' as devtools show log;
 
-import '../enums/menu_actions.dart'; //ihtiyacın olan pakete isim ver, ihtiyacın olan kısmına 'show' ile eriş.
+import '../../enums/menu_actions.dart'; //ihtiyacın olan pakete isim ver, ihtiyacın olan kısmına 'show' ile eriş.
 
 class NotesView extends StatefulWidget {
   const NotesView({super.key});
@@ -34,8 +35,13 @@ class _NotesViewState extends State<NotesView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Main UI'),
+        title: const Text('Your Notes'),
         actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(newNoteRoute);
+              },
+              icon: const Icon(Icons.add)),
           PopupMenuButton<MenuAction>(
             onSelected: (value) async {
               switch (value) {
@@ -66,8 +72,8 @@ class _NotesViewState extends State<NotesView> {
             case ConnectionState.done:
               return StreamBuilder(
                 stream: _notesService.allNotes,
-                  builder: ((context, snapshot) {
-                    switch (snapshot.connectionState) {
+                builder: ((context, snapshot) {
+                  switch (snapshot.connectionState) {
                     case ConnectionState.waiting:
                       return const Text('Waiting for all notes...');
                     default:
